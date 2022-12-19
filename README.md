@@ -20,3 +20,7 @@ _All plugins used in this version are listed above._
 ### Visible Overworld Wild Encounter - by derFischae
 * Add overworld sprites to wild encouters.
 * Source: https://www.pokecommunity.com/showthread.php?t=429019
+
+### Walk In Storage Boxes - by derFischae
+* Storage boxes has an representation as a map, where you can walk.
+* Source: https://www.pokecommunity.com/showthread.php?t=483688
