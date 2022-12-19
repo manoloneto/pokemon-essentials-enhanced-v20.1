@@ -16,3 +16,7 @@ _All plugins used in this version are listed above._
 ### Following Pokemon EX - by Golisopod User
 * Enhanced Walking Pokemon functionality from HGSS.
 * Source: https://www.pokecommunity.com/showthread.php?t=443640
+
+### Visible Overworld Wild Encounter - by derFischae
+* Add overworld sprites to wild encouters.
+* Source: https://www.pokecommunity.com/showthread.php?t=429019
