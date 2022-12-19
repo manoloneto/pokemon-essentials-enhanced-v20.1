@@ -5,4 +5,6 @@ A Pokémon engine to [RPG Maker XP](https://store.steampowered.com/app/235900/RP
 
 _All plugins used in this version are listed above._
 
-### Waiting...
+### Family Tree - by FL
+* Adds new screen on summary, to show the Pokémon parents.
+* Source: https://www.pokecommunity.com/showthread.php?t=339384
