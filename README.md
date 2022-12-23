@@ -26,5 +26,9 @@ _All plugins used in this version are listed above._
 * Source: https://www.pokecommunity.com/showthread.php?t=483688
 
 ### Unreal Time System - by FL
-* his script makes the time in game pass like Minecraft.
+* This script makes the time in game pass like Minecraft.
 * Source: https://www.pokecommunity.com/showthread.php?t=285831
+
+### Enhanced Level Balance - by Manoel Afonso
+* Balance the level of encounters and evolve Pokémon if applicable
+* Source: https://www.pokecommunity.com/showthread.php?t=488598

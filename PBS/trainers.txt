@@ -1,9 +1,13 @@
-# See the documentation on the wiki to learn how to edit this file.
+﻿# See the documentation on the wiki to learn how to edit this file.
 #-------------------------------
 [CAMPER,Liam]
 LoseText = A very good battle, indeed!
-Pokemon = DIGLETT,10
-Pokemon = BONSLY,11
+Pokemon = EEVEE,10
+Pokemon = EEVEE,11
+Pokemon = EEVEE,10
+Pokemon = EEVEE,10
+Pokemon = EEVEE,10
+Pokemon = EEVEE,10
 #-------------------------------
 [LEADER_Brock,Brock]
 Items = FULLRESTORE,FULLRESTORE

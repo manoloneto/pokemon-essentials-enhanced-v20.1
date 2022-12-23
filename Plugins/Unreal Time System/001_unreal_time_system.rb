@@ -55,7 +55,7 @@ module UnrealTime
   # Time proportion here. 
   # So if it is 100, one second in real time will be 100 seconds in game.
   # If it is 60, one second in real time will be one minute in game.
-  PROPORTION=6000
+  PROPORTION=30
 
   # Starting on Essentials v17, the map tone only try to refresh tone each 30 
   # real time seconds. 
