@@ -32,3 +32,9 @@ _All plugins used in this version are listed above._
 ### Enhanced Level Balance - by Manoel Afonso
 * Balance the level of encounters and evolve Pokémon if applicable
 * Source: https://www.pokecommunity.com/showthread.php?t=488598
+
+### Essentials Deluxe - by Lucidious89
+* A multi-purpose plugin that aims to improve base Essentials
+* Source: https://www.pokecommunity.com/showthread.php?p=10534994
+
+
