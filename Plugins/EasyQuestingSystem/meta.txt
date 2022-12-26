@@ -1,0 +1,5 @@
+Name         = Easy Questing System
+Version      = 1.1.0
+Essentials   = 20, 20.1
+Link         = https://www.pokecommunity.com/showthread.php?t=391062              
+Credits      = Marin, Manoel Afonso
