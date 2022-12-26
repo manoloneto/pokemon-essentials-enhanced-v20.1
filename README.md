@@ -37,4 +37,14 @@ _All plugins used in this version are listed above._
 * A multi-purpose plugin that aims to improve base Essentials
 * Source: https://www.pokecommunity.com/showthread.php?p=10534994
 
+### Enhanced UI - by Lucidious89
+* A plugin that compiles a variety of smaller scripts 
+    * Party Ball Icons
+    * IV Ratings
+    * Egg Group Displays
+    * HGSS Shiny Leaf
+    * Move Info display
+    * Battle Info display
+* Source: https://www.pokecommunity.com/showthread.php?t=478509
+
 
