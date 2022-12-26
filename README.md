@@ -47,4 +47,8 @@ _All plugins used in this version are listed above._
     * Battle Info display
 * Source: https://www.pokecommunity.com/showthread.php?t=478509
 
+### Multiple Protagonists - by NettoHikari
+* This script allows you to add multiple player characters to game
+* Source: https://www.pokecommunity.com/showthread.php?t=417948
+
 
