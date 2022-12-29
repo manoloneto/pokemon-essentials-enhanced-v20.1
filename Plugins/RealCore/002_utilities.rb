@@ -60,4 +60,66 @@ module Real
   def self.species(specieId)
     return GameData::Species.get(specieId)
   end
+
+  def self.getLinesOfText(bitmap, value, width, dims, plain = false)
+    x = 0
+    y = 0
+    ret = []
+    if dims
+      dims[0] = 0
+      dims[1] = 0
+    end
+    re = /<c=([^>]+)>/
+    reNoMatch = /<c=[^>]+>/
+    return ret if !bitmap || bitmap.disposed? || width <= 0
+    textmsg = value.clone
+    color = Font.default_color
+    while (c = textmsg.slice!(/\n|[^ \r\t\f\n\-]*\-+|(\S*([ \r\t\f]?))/)) != nil
+      break if c == ""
+      ccheck = c
+      if ccheck == "\n"
+        x = 0
+        y += 22
+        next
+      end
+      textcols = []
+      if ccheck[/</] && !plain
+        ccheck.scan(re) { textcols.push(rgbToColor($1)) }
+        words = ccheck.split(reNoMatch) # must have no matches because split can include match
+      else
+        words = [ccheck]
+      end
+      words.length.times do |i|
+        word = words[i]
+        if word && word != ""
+          textSize = bitmap.text_size(word)
+          textwidth = textSize.width
+          if x > 0 && x + textwidth > width
+            minTextSize = bitmap.text_size(word.gsub(/\s*/, ""))
+            if x > 0 && x + minTextSize.width > width
+              x = 0
+              y += 22
+            end
+          end
+          ret.push([word, x, y, textwidth, 32, color])
+          x += textwidth
+          dims[0] = x if dims && dims[0] < x
+        end
+        if textcols[i]
+          color = textcols[i]
+        end
+      end
+    end
+    dims[1] = y + 22 if dims
+    return ret
+  end
+
+  def self.drawLongText(bitmap, x, y, width, numlines, text, baseColor, shadowColor = nil)
+    normtext = Real.getLinesOfText(bitmap, text, width, nil, true)
+    if shadowColor
+      renderLineBrokenChunksWithShadow(bitmap, x, y, normtext, numlines * 32, baseColor, shadowColor)
+    else
+      renderLineBrokenChunks(bitmap, x, y, normtext, numlines * 32)
+    end
+  end
 end
