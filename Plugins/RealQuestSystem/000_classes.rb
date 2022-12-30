@@ -14,8 +14,6 @@ class Quest
   attr_accessor :requester
   attr_accessor :sprite
   attr_accessor :location
-  attr_accessor :color
-  attr_accessor :time
   attr_accessor :completed
 
   def initialize(id, title, description, requester, sprite, location, color = :WHITE)
@@ -25,8 +23,6 @@ class Quest
     self.requester = requester
     self.sprite = sprite
     self.location = location
-    self.color = Real.color(color)
-    self.time = Time.now
     self.completed = false
   end
 end

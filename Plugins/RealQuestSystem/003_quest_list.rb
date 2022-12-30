@@ -8,9 +8,8 @@ QUEST_LIST = [
             "Lorem ipsum 001",                                              # Quest title
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",     # Quest description
             "Bug Catcher John",                                             # The name of the requester
-            "NPC 10",                                                    # The name of the sprite in "Graphics/Characters"
-            "Queesting Town",                                               # The name of city, town or route
-            :SUPERLIGHTBLUE),                                               # The color of quest, this is not mandatory
+            "NPC 10",                                                       # The name of the sprite in "Graphics/Characters"
+            "Queesting Town"),                                              # The name of city, town or route
 
   Quest.new(:QUEST_002,
             "Lorem ipsum 002",

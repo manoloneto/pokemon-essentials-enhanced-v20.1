@@ -66,16 +66,16 @@ class Window_Quest < Window_DrawableCommand
 
   def drawItem(index, _count, rect)
     return if index >= self.top_row + self.page_item_max
-    rect = Rect.new(rect.x + 16, rect.y, rect.width - 16, rect.height)
+    rect = Rect.new(rect.x + 16, rect.y, rect.width - 16, rect.height + 15)
     quest = @commands[index]
     if quest.completed
-      pbCopyBitmap(self.contents, @iconCompleted.bitmap, rect.x - 4, rect.y + 10)
+      pbCopyBitmap(self.contents, @iconCompleted.bitmap, rect.x + 5, rect.y + 22)
     else
-      pbCopyBitmap(self.contents, @iconInProgress.bitmap, rect.x - 4, rect.y + 10)
+      pbCopyBitmap(self.contents, @iconInProgress.bitmap, rect.x + 5, rect.y + 22)
     end
     text = sprintf(@commands[index].title)
     Real.setDefaultFontStyle(self.contents, 22)
-    pbDrawShadowText(self.contents, rect.x + 36, rect.y + 19, rect.width, rect.height,
+    pbDrawShadowText(self.contents, rect.x + 36, rect.y + 30, rect.width, rect.height,
                      text, TEXT_BASE_COLOR, nil)
   end
 
@@ -117,7 +117,7 @@ class RealQuestEntry_Scene
 
     addBackgroundPlane(@sprites, "background", "Real Quest System/entry_background", @viewport)
 
-    @sprites["questList"] = Window_Quest.new(226, 28, 280, 340, @viewport)
+    @sprites["questList"] = Window_Quest.new(226, 18, 350, 350, @viewport)
 
     @sprites["overlay"] = BitmapSprite.new(Graphics.width, Graphics.height, @viewport)
 
