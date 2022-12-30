@@ -8,7 +8,7 @@ QUEST_LIST = [
             "Lorem ipsum 001",                                              # Quest title
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",     # Quest description
             "Bug Catcher John",                                             # The name of the requester
-            "trchar039",                                                    # The name of the sprite in "Graphics/Characters"
+            "NPC 10",                                                    # The name of the sprite in "Graphics/Characters"
             "Queesting Town",                                               # The name of city, town or route
             :SUPERLIGHTBLUE),                                               # The color of quest, this is not mandatory
 
@@ -16,69 +16,69 @@ QUEST_LIST = [
             "Lorem ipsum 002",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean elementum mattis sollicitudin. Nam risus mauris, sodales vitae pharetra eu, lacinia quis diam. Pellentesque molestie condimentum augue at vehicula.",
             "GYM Leader Mist",
-            "trchar039",
+            "NPC 11",
             "Requesting City"),
 
   Quest.new(:QUEST_003,
             "Lorem ipsum 003",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             "GYM Leader Mist",
-            "trchar040",
+            "NPC 12",
             "Cerulean Town"),
 
   Quest.new(:QUEST_004,
             "Lorem ipsum 004",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             "GYM Leader Mist",
-            "trchar040",
+            "NPC 13",
             "Cerulean Town"),
 
   Quest.new(:QUEST_005,
             "Lorem ipsum 005",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             "GYM Leader Mist",
-            "trchar040",
+            "NPC 10",
             "Cerulean Town"),
 
   Quest.new(:QUEST_006,
             "Lorem ipsum 006",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             "GYM Leader Mist",
-            "trchar040",
+            "NPC 10",
             "Cerulean Town"),
 
   Quest.new(:QUEST_007,
             "Lorem ipsum 007",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             "GYM Leader Mist",
-            "trchar040",
+            "NPC 10",
             "Cerulean Town"),
 
   Quest.new(:QUEST_008,
             "Lorem ipsum 008",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             "GYM Leader Mist",
-            "trchar040",
+            "NPC 10",
             "Cerulean Town"),
 
   Quest.new(:QUEST_009,
             "Lorem ipsum 009",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             "GYM Leader Mist",
-            "trchar040",
+            "NPC 10",
             "Cerulean Town"),
 
   Quest.new(:QUEST_010,
             "Lorem ipsum 010",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             "GYM Leader Mist",
-            "trchar040",
+            "NPC 10",
             "Cerulean Town"),
 
   Quest.new(:QUEST_011,
             "Lorem ipsum 011",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             "GYM Leader Mist",
-            "trchar040",
+            "NPC 10",
             "Cerulean Town"),
 ]

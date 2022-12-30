@@ -15,23 +15,22 @@ module RQS # Real Quest System
     attr_reader :selected
 
     TEXT_BASE_COLOR = Color.new(248, 248, 248)
-    TEXT_SHADOW_COLOR = Color.new(40, 40, 40)
 
     def initialize(command, x, y, viewport = nil)
       super(viewport)
       @image = command[0]
       @name = command[1]
       @selected = false
-      if $player.female? && pbResolveBitmap(sprintf("Graphics/Pictures/Pokegear/icon_button_f"))
-        @button = AnimatedBitmap.new("Graphics/Pictures/Pokegear/icon_button_f")
-      else
-        @button = AnimatedBitmap.new("Graphics/Pictures/Pokegear/icon_button")
-      end
+
+      @button = AnimatedBitmap.new("Graphics/Pictures/Real Quest System/main_button")
+
       @contents = BitmapWrapper.new(@button.width, @button.height)
       self.bitmap = @contents
       self.x = x - (@button.width / 2)
       self.y = y
-      pbSetSystemFont(self.bitmap)
+
+      Real.setDefaultFontStyle(self.bitmap, 23)
+
       refresh
     end
 
@@ -49,17 +48,25 @@ module RQS # Real Quest System
 
     def refresh
       self.bitmap.clear
+
       rect = Rect.new(0, 0, @button.width, @button.height / 2)
       rect.y = @button.height / 2 if @selected
+
       self.bitmap.blt(0, 0, @button.bitmap, rect)
+
       textpos = [
-        [@name, rect.width / 2, (rect.height / 2) - 10, 2, TEXT_BASE_COLOR, TEXT_SHADOW_COLOR],
+        [@name, 70, 22, 0, TEXT_BASE_COLOR],
       ]
+
       pbDrawTextPositions(self.bitmap, textpos)
+
       imagepos = [
-        [sprintf("Graphics/Pictures/Pokegear/icon_" + @image), 18, 10],
+        [sprintf("Graphics/Pictures/Real Quest System/icon_" + @image), 35, 15],
       ]
+
       pbDrawImagePositions(self.bitmap, imagepos)
+
+      Real.setDefaultFontStyle(self.bitmap, 23)
     end
   end
 
@@ -78,11 +85,14 @@ module RQS # Real Quest System
     def pbStartScene(commands)
       @commands = commands
       @index = 0
+
       @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
       @viewport.z = 99999
+
       @sprites = {}
       @sprites["background"] = IconSprite.new(0, 0, @viewport)
       @sprites["background"].setBitmap("Graphics/Pictures/Real Quest System/background")
+
       @commands.length.times do |i|
         @sprites["button#{i}"] = RealQuestButton.new(@commands[i], Graphics.width / 2, 0, @viewport)
         button_height = @sprites["button#{i}"].bitmap.height / 2
@@ -170,13 +180,14 @@ module RQS # Real Quest System
   ################################################################################
 
   MenuHandlers.add(:rqs_menu, :rqs_ongoing, {
-    "name" => _INTL("Ongoing"),
+    "name" => _INTL("In Progress"),
+    "icon_name" => "in_progress",
     "order" => 0,
     "effect" => proc { |menu|
       pbPlayDecisionSE
       pbFadeOutIn {
         scene = RealQuestEntry_Scene.new
-        screen = RealQuestEntry_Screen.new(scene)
+        screen = RealQuestEntry_Screen.new(scene, false) # Just ongoing
         screen.pbStartScreen
       }
       next false
@@ -185,8 +196,15 @@ module RQS # Real Quest System
 
   MenuHandlers.add(:rqs_menu, :rqs_completed, {
     "name" => _INTL("Completed"),
+    "icon_name" => "completed",
     "order" => 1,
     "effect" => proc { |menu|
+      pbPlayDecisionSE
+      pbFadeOutIn {
+        scene = RealQuestEntry_Scene.new
+        screen = RealQuestEntry_Screen.new(scene, true) # Just completed
+        screen.pbStartScreen
+      }
       next false
     },
   })

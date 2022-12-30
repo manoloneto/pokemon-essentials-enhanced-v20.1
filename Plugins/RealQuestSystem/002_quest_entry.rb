@@ -4,10 +4,11 @@
 class Window_Quest < Window_DrawableCommand
   TEXT_BASE_COLOR = Color.new(248, 248, 248)
 
-  def initialize(x, y, width, height, viewport)
+  def initialize(x, y, width, height, viewport, justCompleted = false)
     @sprites = {}
     @commands = []
     super(x, y, width, height, viewport)
+    @justCompleted = justCompleted
     @selarrow = AnimatedBitmap.new("Graphics/Pictures/Real Quest System/cursor")
     @iconCompleted = AnimatedBitmap.new("Graphics/Pictures/Real Quest System/icon_completed")
     @iconInProgress = AnimatedBitmap.new("Graphics/Pictures/Real Quest System/icon_in_progress")
@@ -37,17 +38,27 @@ class Window_Quest < Window_DrawableCommand
 
   def page_item_max; return 9; end
 
+  def drawCharacter(char)
+    @sprites["character"].dispose if @sprites["character"]
+    @sprites["character"] = IconSprite.new(0, 0, @viewport)
+    @sprites["character"].setBitmap("Graphics/Characters/#{char}")
+    @sprites["character"].x = 40 # Horizontal
+    @sprites["character"].y = 270 # Vertical
+    @sprites["character"].src_rect.height = (@sprites["character"].bitmap.height / 4).round
+    @sprites["character"].src_rect.width = (@sprites["character"].bitmap.width / 4).round
+  end
+
   def drawCursor(index, rect)
     if self.index == index
       pbCopyBitmap(self.contents, @selarrow.bitmap, rect.x, rect.y + 8)
-
       if @commands.length > 0
         @sprites["requester"].dispose if @sprites["requester"]
         @sprites["location"].dispose if @sprites["location"]
         @sprites["description"].dispose if @sprites["description"]
         @sprites["description"] = RealDefaultTextMultiline.new(@commands[index].description, 22, 37, @viewport, TEXT_BASE_COLOR, 200, 208)
-        @sprites["requester"] = RealDefaultText.new(["", @commands[index].requester], 52, 273, @viewport, TEXT_BASE_COLOR)
-        @sprites["location"] = RealDefaultText.new(["", @commands[index].location], 52, 296, @viewport, TEXT_BASE_COLOR)
+        @sprites["requester"] = RealDefaultText.new(["", @commands[index].requester], 52, 274, @viewport, TEXT_BASE_COLOR)
+        @sprites["location"] = RealDefaultText.new(["", @commands[index].location], 52, 297, @viewport, TEXT_BASE_COLOR)
+        drawCharacter(@commands[index].sprite)
       end
     end
     return Rect.new(rect.x, rect.y, rect.width, rect.height)
@@ -64,7 +75,7 @@ class Window_Quest < Window_DrawableCommand
     end
     text = sprintf(@commands[index].title)
     Real.setDefaultFontStyle(self.contents, 22)
-    pbDrawShadowText(self.contents, rect.x + 36, rect.y + 20, rect.width, rect.height,
+    pbDrawShadowText(self.contents, rect.x + 36, rect.y + 19, rect.width, rect.height,
                      text, TEXT_BASE_COLOR, nil)
   end
 
@@ -96,7 +107,8 @@ class RealQuestEntry_Scene
     pbUpdateSpriteHash(@sprites)
   end
 
-  def pbStartScene
+  def pbStartScene(justCompleted = false)
+    @justCompleted = justCompleted
     @cursor = AnimatedBitmap.new("Graphics/Pictures/Real Quest System/cursor")
 
     @sprites = {}
@@ -105,12 +117,7 @@ class RealQuestEntry_Scene
 
     addBackgroundPlane(@sprites, "background", "Real Quest System/entry_background", @viewport)
 
-    @sprites["questList"] = Window_Quest.new(226, 28, 280, 364, @viewport)
-
-    @sprites["icon"] = PokemonSprite.new(@viewport)
-    @sprites["icon"].setOffset(PictureOrigin::CENTER)
-    @sprites["icon"].x = 112
-    @sprites["icon"].y = 196
+    @sprites["questList"] = Window_Quest.new(226, 28, 280, 340, @viewport)
 
     @sprites["overlay"] = BitmapSprite.new(Graphics.width, Graphics.height, @viewport)
 
@@ -137,7 +144,7 @@ class RealQuestEntry_Scene
       questList = questList.sort { |a, b| a.title <=> b.title }
       @questList = questList
 
-      @sprites["questList"].commands = @questList
+      @sprites["questList"].commands = @questList.select { |q| q.completed == @justCompleted }
       @sprites["questList"].index = index
       @sprites["questList"].refresh
       @sprites["background"].setBitmap("Graphics/Pictures/Real Quest System/entry_background")
@@ -150,16 +157,6 @@ class RealQuestEntry_Scene
     overlay = @sprites["overlay"].bitmap
     overlay.clear
     Real.setDefaultFontStyle(overlay)
-
-    #requesterSprite = @sprites["questList"].sprite
-    #textpos = []
-    #textpos.push([GameData::Species.get(requesterSprite).name, 112, 58, 2, base, shadow]) if requesterSprite
-
-    # Draw all text
-    #pbDrawTextPositions(overlay, textpos)
-
-    # Set Pokémon sprite
-    #setIconBitmap(requesterSprite)
   end
 
   def setIconBitmap(species)
@@ -191,12 +188,13 @@ end
 #
 #===============================================================================
 class RealQuestEntry_Screen
-  def initialize(scene)
+  def initialize(scene, justCompleted = false)
     @scene = scene
+    @justCompleted = justCompleted
   end
 
   def pbStartScreen
-    @scene.pbStartScene
+    @scene.pbStartScene(@justCompleted)
     @scene.realQuestEntryScene
     @scene.pbEndScene
   end
