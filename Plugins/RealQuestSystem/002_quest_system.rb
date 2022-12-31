@@ -3,7 +3,7 @@
 # Created by realAfonso
 ################################################################################
 
-module RQS # Real Quest System
+module Real # Real Quest System
 
   ################################################################################
   # Add a new quest to player
@@ -16,7 +16,7 @@ module RQS # Real Quest System
 
     Real.debugMessage("Current player quest list: #{$player.quests.size.to_s.cyan} quests")
 
-    quest = QUEST_LIST.find { |q| q.id == questID }
+    quest = Quest.parse(QUEST_LIST).find { |q| q.id == questID }
 
     if quest
       Real.debugMessage("Quest added to player's list".green)
@@ -51,6 +51,33 @@ module RQS # Real Quest System
 
     Real.debugMessage("Current player quest list: #{$player.quests.size.to_s.cyan} quests")
     Real.debugEnd
+  end
+
+  ################################################################################
+  # Check if quest is completed
+  ################################################################################
+
+  def self.isQuestCompleted(questID)
+    Real.debugTitle("Real Quest System", "Checking if quest is completed")
+
+    $player.quests = [] if $player.quests.class == NilClass
+
+    questIndex = $player.quests.find_index { |q| q.id == questID }
+
+    if questIndex && questIndex >= 0
+      Real.debugMessage("Quest #{questID} found!")
+      if $player.quests[questIndex].completed
+        Real.debugMessage("Quest #{questID} is not completed!".red)
+      else
+        Real.debugMessage("Quest #{questID} is completed!".green)
+      end
+      Real.debugEnd
+      return $player.quests[questIndex].completed
+    else
+      Real.debugError("ERROR", "Quest #{questID} not found in player's quest list")
+      Real.debugEnd
+      return false
+    end
   end
 
   ################################################################################

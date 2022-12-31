@@ -16,7 +16,7 @@ class Quest
   attr_accessor :location
   attr_accessor :completed
 
-  def initialize(id, title, description, requester, sprite, location, color = :WHITE)
+  def initialize(id, title, description, requester, sprite, location)
     self.id = id
     self.title = title
     self.description = description
@@ -24,6 +24,22 @@ class Quest
     self.sprite = sprite
     self.location = location
     self.completed = false
+  end
+
+  def self.parse(array)
+    quests = []
+    array.each do |q|
+      quest = Quest.new(
+        q[0], # Quest ID
+        q[1], # Title
+        q[2], # Description
+        q[3], # Requester name
+        q[4], # Requester sprite
+        q[5], # Location name
+      )
+      quests << quest
+    end
+    return quests
   end
 end
 

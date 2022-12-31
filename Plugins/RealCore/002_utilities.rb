@@ -4,6 +4,37 @@
 ################################################################################
 
 module Real
+
+  ################################################################################
+  # UTILITIES FOR DEBUG MESSEGES
+  ################################################################################
+
+  def self.debugMessage(message)
+    if DEBUG_MODE
+      echoln message
+    end
+  end
+
+  def self.debugTitle(title, message = "")
+    messageToDebug = title.mark_green
+    messageToDebug += " - #{message.green}" if message != ""
+    debugMessage(messageToDebug)
+  end
+
+  def self.debugError(title, message = "")
+    messageToDebug = title.mark_red
+    messageToDebug += " - #{message.red}" if message != ""
+    debugMessage(messageToDebug)
+  end
+
+  def self.debugEnd(message = "")
+    debugMessage("#{message} \n\n")
+  end
+
+  ################################################################################
+  # UTILITY TO GET DEFAULT COLORS
+  ################################################################################
+
   def self.color(color)
     return Color.new(0, 0, 0) if color == :BLACK
     return Color.new(255, 115, 115) if color == :LIGHTRED
@@ -35,31 +66,17 @@ module Real
     return Color.new(255, 255, 255) # if color == :WHITE
   end
 
-  def self.debugMessage(message)
-    if DEBUG_MODE
-      echoln message
-    end
-  end
-
-  def self.debugTitle(title, message = "")
-    messageToDebug = title.mark_green
-    messageToDebug += " - #{message.green}" if message != ""
-    debugMessage(messageToDebug)
-  end
-
-  def self.debugError(title, message = "")
-    messageToDebug = title.mark_red
-    messageToDebug += " - #{message.red}" if message != ""
-    debugMessage(messageToDebug)
-  end
-
-  def self.debugEnd(message = "")
-    debugMessage("#{message} \n\n")
-  end
+  ################################################################################
+  # UTILITIES FOR GET OBJECTS
+  ################################################################################
 
   def self.species(specieId)
     return GameData::Species.get(specieId)
   end
+
+  ################################################################################
+  # UTILITIES FOR WRITE LONG TEXTS
+  ################################################################################
 
   def self.getLinesOfText(bitmap, value, width, dims, plain = false)
     x = 0

@@ -3,8 +3,12 @@
 # Created by realAfonso
 ################################################################################
 
+################################################################################
+# SETTINGS
+################################################################################
+
 module Real
-  DEBUG_MODE = true # Turn true if you want see console messages
+  DEBUG_MODE = false # Turn true if you want see console messages
 
   DEFAULT_FONT_NAME = "Montserrat"
   DEFAULT_FONT_SIZE = 27

@@ -3,13 +3,13 @@
 # Created by realAfonso
 ################################################################################
 
-module RQS # Real Quest System
+module Real # Real Quest System
 
   ################################################################################
-  # Button class of Quest System
+  # BUTTON OF QUEST SELECTION SCENE
   ################################################################################
 
-  class RealQuestButton < Sprite
+  class QuestButton < Sprite
     attr_reader :index
     attr_reader :name
     attr_reader :selected
@@ -22,14 +22,17 @@ module RQS # Real Quest System
       @name = command[1]
       @selected = false
 
-      @button = AnimatedBitmap.new("Graphics/Pictures/Real Quest System/main_button")
+      old_style = "/Old Sprites" if USE_GENERATION_IV_STYLE
+
+      @button = AnimatedBitmap.new("Graphics/Plugins/Real Quest System#{old_style}/main_button")
 
       @contents = BitmapWrapper.new(@button.width, @button.height)
       self.bitmap = @contents
       self.x = x - (@button.width / 2)
       self.y = y
 
-      Real.setDefaultFontStyle(self.bitmap, 23)
+      textSize = USE_GENERATION_IV_STYLE ? 18 : 22
+      Real.setDefaultFontStyle(self.bitmap, textSize, USE_GENERATION_IV_STYLE)
 
       refresh
     end
@@ -54,64 +57,91 @@ module RQS # Real Quest System
 
       self.bitmap.blt(0, 0, @button.bitmap, rect)
 
+      shadowColor = USE_GENERATION_IV_STYLE ? Color.new(72, 80, 88) : nil
+
       textpos = [
-        [@name, 70, 22, 0, TEXT_BASE_COLOR],
+        [@name, 70, 22, 0, TEXT_BASE_COLOR, shadowColor],
       ]
 
       pbDrawTextPositions(self.bitmap, textpos)
 
+      old_style = "/Old Sprites" if USE_GENERATION_IV_STYLE
+
+      iconPosition = USE_GENERATION_IV_STYLE ? 20 : 15
+
       imagepos = [
-        [sprintf("Graphics/Pictures/Real Quest System/icon_" + @image), 35, 15],
+        [sprintf("Graphics/Plugins/Real Quest System#{old_style}/icon_" + @image), 35, iconPosition],
       ]
 
       pbDrawImagePositions(self.bitmap, imagepos)
 
-      Real.setDefaultFontStyle(self.bitmap, 23)
+      textSize = USE_GENERATION_IV_STYLE ? 18 : 22
+      Real.setDefaultFontStyle(self.bitmap, textSize, USE_GENERATION_IV_STYLE)
     end
   end
 
   ################################################################################
-  # Scene class of Quest System
+  # CREATING THE QUEST SELECTION SCENE
   ################################################################################
 
-  class RealQuestMain_Scene
-    def pbUpdate
+  class QuestSelection_Scene
+    def update
       @commands.length.times do |i|
         @sprites["button#{i}"].selected = (i == @index)
       end
       pbUpdateSpriteHash(@sprites)
     end
 
-    def pbStartScene(commands)
+    def startScene(commands)
       @commands = commands
       @index = 0
 
       @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
       @viewport.z = 99999
 
+      old_style = "/Old Sprites" if USE_GENERATION_IV_STYLE
+
       @sprites = {}
       @sprites["background"] = IconSprite.new(0, 0, @viewport)
-      @sprites["background"].setBitmap("Graphics/Pictures/Real Quest System/background")
+      @sprites["background"].setBitmap("Graphics/Plugins/Real Quest System#{old_style}/background")
 
       @commands.length.times do |i|
-        @sprites["button#{i}"] = RealQuestButton.new(@commands[i], Graphics.width / 2, 0, @viewport)
+        @sprites["button#{i}"] = QuestButton.new(@commands[i], Graphics.width / 2, 0, @viewport)
         button_height = @sprites["button#{i}"].bitmap.height / 2
         @sprites["button#{i}"].y = ((Graphics.height - (@commands.length * button_height)) / 2) + (i * button_height)
       end
 
-      @sprites["screen_title"] = RealDefaultText.new(["title", "TO-DO List"], 30, 12, @viewport)
-      @sprites["button_back"] = RealDefaultText.new(["key_x", "Exit"], Graphics.width - 82, 352, @viewport)
-      @sprites["button_back"] = RealDefaultText.new(["key_c", "Select"], Graphics.width - 182, 352, @viewport)
+      iconPosition = USE_GENERATION_IV_STYLE ? 8 : 12
 
-      pbFadeInAndShow(@sprites) { pbUpdate }
+      @sprites["screen_title"] = RealDefaultText.new(
+        ["title_search", "TO-DO List"],
+        30, iconPosition, @viewport, nil,
+        200, 20, USE_GENERATION_IV_STYLE,
+      )
+
+      iconPosition = USE_GENERATION_IV_STYLE ? 355 : 352
+
+      @sprites["button_select"] = RealDefaultText.new(
+        ["key_c", "Select"],
+        Graphics.width - 182, iconPosition, @viewport,
+        nil, 200, 20, USE_GENERATION_IV_STYLE,
+      )
+
+      @sprites["button_back"] = RealDefaultText.new(
+        ["key_x", "Exit"],
+        Graphics.width - 82, iconPosition, @viewport,
+        nil, 200, 20, USE_GENERATION_IV_STYLE,
+      )
+
+      pbFadeInAndShow(@sprites) { update }
     end
 
-    def pbScene
+    def scene
       ret = -1
       loop do
         Graphics.update
         Input.update
-        pbUpdate
+        update
         if Input.trigger?(Input::BACK)
           pbPlayCloseMenuSE
           break
@@ -132,8 +162,8 @@ module RQS # Real Quest System
       return ret
     end
 
-    def pbEndScene
-      pbFadeOutAndHide(@sprites) { pbUpdate }
+    def endScene
+      pbFadeOutAndHide(@sprites) { update }
       dispose
     end
 
@@ -144,15 +174,15 @@ module RQS # Real Quest System
   end
 
   ################################################################################
-  # Real Quest Main Screen Class
+  # CREATING THE QUEST SELECTION SCREEN
   ################################################################################
 
-  class RealQuestMain_Screen
+  class QuestSelection_Screen
     def initialize(scene)
       @scene = scene
     end
 
-    def pbStartScreen
+    def startScreen
       # Get all commands
       command_list = []
       commands = []
@@ -160,23 +190,23 @@ module RQS # Real Quest System
         command_list.push([hash["icon_name"] || "", name])
         commands.push(hash)
       end
-      @scene.pbStartScene(command_list)
+      @scene.startScene(command_list)
       # Main loop
       end_scene = false
       loop do
-        choice = @scene.pbScene
+        choice = @scene.scene
         if choice < 0
           end_scene = true
           break
         end
         break if commands[choice]["effect"].call(@scene)
       end
-      @scene.pbEndScene if end_scene
+      @scene.endScene if end_scene
     end
   end
 
   ################################################################################
-  # Menu items to quest main screen
+  # MENU ITEMS TO QUEST SELECTION SCREEN
   ################################################################################
 
   MenuHandlers.add(:rqs_menu, :rqs_ongoing, {
@@ -186,9 +216,9 @@ module RQS # Real Quest System
     "effect" => proc { |menu|
       pbPlayDecisionSE
       pbFadeOutIn {
-        scene = RealQuestEntry_Scene.new
-        screen = RealQuestEntry_Screen.new(scene, false) # Just ongoing
-        screen.pbStartScreen
+        scene = QuestList_Scene.new
+        screen = QuestList_Screen.new(scene, false) # Just ongoing
+        screen.startScreen
       }
       next false
     },
@@ -201,25 +231,25 @@ module RQS # Real Quest System
     "effect" => proc { |menu|
       pbPlayDecisionSE
       pbFadeOutIn {
-        scene = RealQuestEntry_Scene.new
-        screen = RealQuestEntry_Screen.new(scene, true) # Just completed
-        screen.pbStartScreen
+        scene = QuestList_Scene.new
+        screen = QuestList_Screen.new(scene, true) # Just completed
+        screen.startScreen
       }
       next false
     },
   })
 
   ################################################################################
-  # Handler to show quest main screen on press key
+  # HANDLER TO SHOW QUEST SELECTION SCREEN ON PRESS KEY
   ################################################################################
 
   EventHandlers.add(:on_frame_update, :real_quest_scene_caller, proc {
-    if Input.triggerex?(:O)
+    if Input.triggerex?(REAL_QUEST_KEY)
       pbPlayDecisionSE
       pbFadeOutIn {
-        scene = RealQuestMain_Scene.new
-        screen = RealQuestMain_Screen.new(scene)
-        screen.pbStartScreen
+        scene = QuestSelection_Scene.new
+        screen = QuestSelection_Screen.new(scene)
+        screen.startScreen
       }
     end
   })
