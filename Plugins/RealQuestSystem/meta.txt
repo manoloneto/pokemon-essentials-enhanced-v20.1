@@ -1,0 +1,6 @@
+Name         = Real Quest System
+Version      = 1.0.0
+Essentials   = 20, 20.1       
+Requires     = Real Core    
+Credits      = realAfonso
+Link         = https://github.com/realafonso   

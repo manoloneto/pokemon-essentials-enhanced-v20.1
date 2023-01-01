@@ -1,0 +1,5 @@
+Name         = Real Core
+Version      = 0.0.1
+Essentials   = 20, 20.1              
+Credits      = realAfonso
+Link         = https://github.com/realafonso   
